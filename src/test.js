@@ -1,33 +1,28 @@
+
+
+
 import { useEffect, useState } from "react"
 import "./App.scss"
-import SocialElement from "./SocialElement"
 
 function App() {
-    const [data, setData] = useState([
-        {
-            id: 1,
-            target: 12000,
-            span: "Twitter Followers",
-        },
-        {
-            id: 2,
-            target: 5000,
-            span: "Youtube Subscribers",
-        },
-        {
-            id: 3,
-            target: 7500,
-            span: "Facebook Fans",
-        },
-    ])
+  const [time,setTime] = useState(0)
+  function scale (number, inMin, inMax, outMin, outMax) {
+    return (number - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+}
+ useEffect(()=>{
+const interval = setInterval(()=>{
+  setTime(time=>time<100?time+1:100)
+},30)
+  return ()=>{
+    clearInterval(interval)
+  }
+ },[])
+  
     return (
-        <div>
-            <body>
-                {data.map((element) => (
-                    <SocialElement {...element} key={element.id} />
-                ))}
-            </body>
-        </div>
+      <>
+        <section className="bg" style={{filter:`blur(${scale(time,0,100,30,0)}px)`}}> </section>
+          <div className="loading-text" style={{opacity:scale(time,0,100,1,0)}}>{time}%</div>
+          </>
     )
 }
 
